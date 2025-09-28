@@ -139,7 +139,7 @@ def click_relative_to_window(window, x_ratio: float, y_ratio: float) -> bool:
         return False
 
 def main(target_monitor_idx: int = 0):
-    app_name = "BrownDust II"
+    app_name = "飞书"
 
     # 获取所有显示器信息
     monitors = get_all_monitors()
@@ -165,7 +165,7 @@ def main(target_monitor_idx: int = 0):
 
     # 点击相对于窗口的指定坐标（这里使用比例，0.5,0.5表示中心）
     # 你可以根据需要修改这些值，例如(0.2, 0.3)表示左侧20%，顶部30%的位置
-    click_relative_to_window(window, 0.5, 0.5)
+    click_relative_to_window(window, 0.15, 0.15)
 
 if __name__ == "__main__":
     # 可以通过命令行参数指定显示器编号，默认为0
