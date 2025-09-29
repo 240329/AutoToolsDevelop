@@ -2,11 +2,10 @@ import pygetwindow as gw
 import pyautogui
 import os
 import time
-from pathlib import Path
 import tkinter as tk
 from tkinter import messagebox
 from screeninfo import get_monitors  # 用于获取多显示器信息
-
+import Click
 
 class BrownDustTool:
     def __init__(self):
@@ -40,37 +39,26 @@ class BrownDustTool:
             return self.launch_from_desktop()
 
     def launch_from_desktop(self):
-        """从桌面启动BrownDust II程序"""
-        desktop_path = str(Path.home() / "Desktop")
+        app_path = ''
+        if os.path.exists(app_path):
+            try:
+                os.startfile(app_path)
+                print(f"已从{app_path}启动程序")
 
-        possible_filenames = [
-            "BrownDust II.exe",
-            "BrownDust II.lnk",
-            "BrownDustII.exe",
-            "BrownDustII.lnk"
-        ]
+                # 等待程序启动
+                print("等待程序启动...")
+                for _ in range(30):
+                    time.sleep(1)
+                    self.window = self.find_window()
+                    if self.window:
+                        self.window.activate()
+                        return True
 
-        for filename in possible_filenames:
-            app_path = os.path.join(desktop_path, filename)
-            if os.path.exists(app_path):
-                try:
-                    os.startfile(app_path)
-                    print(f"已从{app_path}启动程序")
-
-                    # 等待程序启动
-                    print("等待程序启动...")
-                    for _ in range(30):
-                        time.sleep(1)
-                        self.window = self.find_window()
-                        if self.window:
-                            self.window.activate()
-                            return True
-
-                    print("程序启动超时")
-                    return False
-                except Exception as e:
-                    print(f"启动程序时出错: {e}")
-                    return False
+                print("程序启动超时")
+                return False
+            except Exception as e:
+                print(f"启动程序时出错: {e}")
+                return False
 
         print(f"在桌面上未找到{self.window_title}程序")
         return False
@@ -165,6 +153,8 @@ class BrownDustTool:
         result_text = "\n".join(coord_text)
         messagebox.showinfo("坐标信息", result_text)
         print(result_text)
+        self.coordinate_window.bind("<Escape>", lambda e: self.stop_listener())
+        pyautogui.click(abs_x, abs_y)
 
     def start_coordinate_listener(self):
         """启动鼠标点击监听器"""
@@ -174,7 +164,7 @@ class BrownDustTool:
         self.coordinate_window.title(f"{self.window_title}坐标工具")
         self.coordinate_window.attributes("-alpha", 0.3)
         self.coordinate_window.attributes("-topmost", True)
-        self.coordinate_window.geometry("350x120")
+        self.coordinate_window.geometry("400x400")
 
         # 更新说明文本，反映当前功能
         label = tk.Label(

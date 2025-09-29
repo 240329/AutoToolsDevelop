@@ -316,7 +316,7 @@ class Click:
             click_y = top + int(height * y_ratio)
 
             # 移动鼠标并点击
-            pyautogui.moveTo(click_x, click_y, duration=0.5)
+            pyautogui.moveTo(click_x, click_y, duration=0.1)
             pyautogui.click()
             print(f"已点击窗口相对位置: ({x_ratio}, {y_ratio})，绝对坐标: ({click_x}, {click_y})")
             return True
